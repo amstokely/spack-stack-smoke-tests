@@ -1,61 +1,37 @@
-name: Build Spack Environment on macOS
-
+name: Spack buildcache build 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
+  workflow_dispatch:
+    inputs:
+      os_choice:
+        description: 'Select the operating system to run the job on'
+        required: true
+        default: 'ubuntu-latest'
+        type: choice
+        options:
+          - ubuntu-latest
+          - macos-latest
 
 jobs:
   spack-build:
-    runs-on: macos-latest
+    runs-on: ${{ github.event.inputs.os_choice }}
+    permissions:
+      packages: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Install Spack
-        run: |
-          git clone https://github.com/spack/spack.git
-          . ./spack/share/spack/setup-env.sh
-
+      - name: Setup Spack
+        uses: spack/setup-spack@v2
       - name: Create Spack Environment 
         run: |
-          . ./spack/share/spack/setup-env.sh
-          spack env create netcdf
-          spack env activate netcdf
+          . /home/runner/work/spack-stack-smoke-tests/spack-stack-smoke-tests/spack/share/spack/setup-env.sh
+          spack env activate .
           spack compiler find
-          spack add netcdf-c%apple-clang@15.0.0
-          spack add netcdf-fortran%apple-clang@15.0.0
-          spack add parallel-netcdf%apple-clang@15.0.0
-      - name: Set Spack Environment Path
-        run: |
-          . ./spack/share/spack/setup-env.sh
-          spack env activate netcdf
-          echo "spack_netcdf_env_path=${SPACK_ENV}" >> $GITHUB_ENV
       - name: Concretize Spack Environment 
         run: |
-          . ./spack/share/spack/setup-env.sh
-          spack env activate netcdf
+          . /home/runner/work/spack-stack-smoke-tests/spack-stack-smoke-tests/spack/share/spack/setup-env.sh
+          spack env activate .
           spack concretize 2<&1 | tee log.concretize
-      - name: Upload Concretization Logs
-        uses: actions/upload-artifact@v3
-        with:
-          name: log.concretize
-          path: ./log.concretize
-      - name: Upload Spack Environment File 
-        uses: actions/upload-artifact@v3
-        with:
-          name: spack.yaml 
-          path: ${spack_netcdf_env_path}/spack.yaml 
-      #- name: Install Spack Environment 
-      #  run: |
-      #    . ./spack/share/spack/setup-env.sh
-      #    spack env activate netcdf
-      #    spack install --verbose 2<&1 | tee log.install
-      #- name: Upload Install Logs
-      #  uses: actions/upload-artifact@v3
-      #  with:
-      #    name: log.install
-      #    path: ./log.install
+          spack install --verbose 2<&1 | tee log.install
+          spack -e . mirror set --oci-username ${{ github.actor }} --oci-password "${{ secrets.ACCESS_TOKEN }}" local-buildcache
 
