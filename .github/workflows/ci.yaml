@@ -19,7 +19,7 @@ jobs:
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
           eval "$(/opt/homebrew/bin/brew shellenv)"
-      
+
       - name: Install Dependencies
         run: |
           brew install git python # Add other dependencies if necessary
@@ -30,19 +30,18 @@ jobs:
           . ./spack/share/spack/setup-env.sh
 
       - name: Add Spack packages
-      run: |
+        run: |
           . ./spack/share/spack/setup-env.sh
-          spack env create netcdf 
-          spack env activate netcdf 
-          spack add netcdf-c 
-          spack add netcdf-fortran 
-          spack add parallel-netcdf 
-          spack concretize 2<&1 | tee log.concretize 
+          spack env create netcdf
+          spack env activate netcdf
+          spack add netcdf-c
+          spack add netcdf-fortran
+          spack add parallel-netcdf
+          spack concretize 2<&1 | tee log.concretize
 
-     - name: Upload logs 
-       uses: actions/upload-artifact@v3
-       with:
-          name: log.concretize 
+      - name: Upload logs
+        uses: actions/upload-artifact@v3
+        with:
+          name: log.concretize
           path: ./log.concretize
-
 
