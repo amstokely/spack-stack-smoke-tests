@@ -1,0 +1,55 @@
+name: Build Spack Environment on macOS
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  spack-build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Homebrew
+        run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+          eval "$(/opt/homebrew/bin/brew shellenv)"
+      
+      - name: Install Dependencies
+        run: |
+          brew install git python # Add other dependencies if necessary
+
+      - name: Install Spack
+        run: |
+          git clone https://github.com/spack/spack.git
+          . ./spack/share/spack/setup-env.sh
+
+      - name: Add Spack packages and build environment
+        run: |
+          . ./spack/share/spack/setup-env.sh
+          spack env create my-env
+          spack env activate my-env
+          spack add [package-name]
+          spack install
+
+      - name: Cache Spack Installations
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.spack/
+            ~/spack/opt/
+          key: ${{ runner.os }}-spack-${{ hashFiles('spack.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-spack-
+
+      - name: Verify Spack Environment
+        run: |
+          . ./spack/share/spack/setup-env.sh
+          spack env activate my-env
+          spack find
+
