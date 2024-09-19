@@ -33,6 +33,8 @@ jobs:
           . ./spack/share/spack/setup-env.sh
           spack env activate netcdf
           echo "spack_netcdf_env_path=${SPACK_ENV}" >> $GITHUB_ENV
+          echo ${SPACK_ENV}
+          spack location -e netcdf
       - name: Concretize Spack Environment 
         run: |
           . ./spack/share/spack/setup-env.sh
