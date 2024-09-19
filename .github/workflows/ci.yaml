@@ -29,7 +29,6 @@ jobs:
           spack add netcdf-c%apple-clang@15.0.0
           spack add netcdf-fortran%apple-clang@15.0.0
           spack add parallel-netcdf%apple-clang@15.0.0
-          spack concretize 2<&1 | tee log.concretize
 
       - name: Concretize Spack Environment 
         run: |
@@ -41,14 +40,14 @@ jobs:
         with:
           name: log.concretize
           path: ./log.concretize
-      - name: Install Spack Environment 
-        run: |
-          . ./spack/share/spack/setup-env.sh
-          spack env activate netcdf
-          spack install --verbose 2<&1 | tee log.install
-      - name: Upload Concretization Logs
-        uses: actions/upload-artifact@v3
-        with:
-          name: log.install
-          path: ./log.install
+      #- name: Install Spack Environment 
+      #  run: |
+      #    . ./spack/share/spack/setup-env.sh
+      #    spack env activate netcdf
+      #    spack install --verbose 2<&1 | tee log.install
+      #- name: Upload Install Logs
+      #  uses: actions/upload-artifact@v3
+      #  with:
+      #    name: log.install
+      #    path: ./log.install
 
