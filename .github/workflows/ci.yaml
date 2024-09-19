@@ -26,9 +26,9 @@ jobs:
           spack env activate netcdf
           spack compiler find
           spack compilers
-          spack add netcdf-c%apple-clang@14.0.0
-          spack add netcdf-fortran%apple-clang@14.0.0
-          spack add parallel-netcdf%apple-clang@14.0.0
+          spack add netcdf-c%apple-clang@15.0.0
+          spack add netcdf-fortran%apple-clang@15.0.0
+          spack add parallel-netcdf%apple-clang@15.0.0
           spack concretize 2<&1 | tee log.concretize
 
       - name: Concretize Spack Environment 
