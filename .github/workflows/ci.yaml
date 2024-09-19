@@ -29,7 +29,7 @@ jobs:
           spack add netcdf-fortran%apple-clang@15.0.0
           spack add parallel-netcdf%apple-clang@15.0.0
       - name: Set Spack Environment Path
-        run |
+        run: |
           . ./spack/share/spack/setup-env.sh
           spack env activate netcdf
           echo "spack_netcdf_env_path=${SPACK_ENV}" >> $GITHUB_ENV
