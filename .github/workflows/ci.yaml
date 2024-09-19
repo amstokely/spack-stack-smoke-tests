@@ -33,7 +33,6 @@ jobs:
         run: |
           . ./spack/share/spack/setup-env.sh
           spack env create netcdf
-          spack env activate netcdf%apple-clang@14.0.0
           spack add netcdf-c%apple-clang@14.0.0
           spack add netcdf-fortran%apple-clang@14.0.0
           spack add parallel-netcdf%apple-clang@14.0.0
