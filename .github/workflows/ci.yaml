@@ -28,8 +28,11 @@ jobs:
           spack add netcdf-c%apple-clang@15.0.0
           spack add netcdf-fortran%apple-clang@15.0.0
           spack add parallel-netcdf%apple-clang@15.0.0
-          echo "SPACK_ENV=$SPACK_ENV" >> $GITHUB_ENV
-
+      - name: Set Spack Environment Path
+        run |
+          . ./spack/share/spack/setup-env.sh
+          spack env activate netcdf
+          echo "spack_netcdf_env_path=${SPACK_ENV}" >> $GITHUB_ENV
       - name: Concretize Spack Environment 
         run: |
           . ./spack/share/spack/setup-env.sh
@@ -44,7 +47,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: spack.yaml 
-          path: ${SPACK_ENV}/spack.yaml 
+          path: ${spack_netcdf_env_path}/spack.yaml 
       #- name: Install Spack Environment 
       #  run: |
       #    . ./spack/share/spack/setup-env.sh
