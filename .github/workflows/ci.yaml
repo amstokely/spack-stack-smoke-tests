@@ -29,27 +29,20 @@ jobs:
           git clone https://github.com/spack/spack.git
           . ./spack/share/spack/setup-env.sh
 
-      - name: Add Spack packages and build environment
-        run: |
+      - name: Add Spack packages
+      run: |
           . ./spack/share/spack/setup-env.sh
-          spack env create my-env
-          spack env activate my-env
-          spack add [package-name]
-          spack install
+          spack env create netcdf 
+          spack env activate netcdf 
+          spack add netcdf-c 
+          spack add netcdf-fortran 
+          spack add parallel-netcdf 
+          spack concretize 2<&1 | tee log.concretize 
 
-      - name: Cache Spack Installations
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.spack/
-            ~/spack/opt/
-          key: ${{ runner.os }}-spack-${{ hashFiles('spack.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-spack-
+     - name: Upload logs 
+       uses: actions/upload-artifact@v3
+       with:
+          name: log.concretize 
+          path: ./log.concretize
 
-      - name: Verify Spack Environment
-        run: |
-          . ./spack/share/spack/setup-env.sh
-          spack env activate my-env
-          spack find
 
