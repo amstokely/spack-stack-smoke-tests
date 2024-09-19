@@ -23,9 +23,6 @@ jobs:
       - name: Install Dependencies
         run: |
           brew install git python llvm@14 
-          echo 'export PATH="/opt/homebrew/opt/llvm@14/bin:$PATH"' >> /Users/runner/.bash_profile
-          export LDFLAGS="-L/opt/homebrew/opt/llvm@14/lib"
-          export CPPFLAGS="-I/opt/homebrew/opt/llvm@14/include"
       - name: Install Spack
         run: |
           git clone https://github.com/spack/spack.git
@@ -33,6 +30,9 @@ jobs:
 
       - name: Create Spack Environment 
         run: |
+          echo 'export PATH="/opt/homebrew/opt/llvm@14/bin:$PATH"' >> /Users/runner/.bash_profile
+          export LDFLAGS="-L/opt/homebrew/opt/llvm@14/lib"
+          export CPPFLAGS="-I/opt/homebrew/opt/llvm@14/include"
           . ./spack/share/spack/setup-env.sh
           spack env create netcdf
           spack env activate netcdf
