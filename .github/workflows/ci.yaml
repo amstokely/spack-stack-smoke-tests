@@ -22,8 +22,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          brew install git python # Add other dependencies if necessary
-
+          brew install git python llvm@14 
       - name: Install Spack
         run: |
           git clone https://github.com/spack/spack.git
@@ -33,6 +32,9 @@ jobs:
         run: |
           . ./spack/share/spack/setup-env.sh
           spack env create netcdf
+          spack env activate netcdf
+          spack compiler find
+          spack compilers
           spack add netcdf-c%apple-clang@14.0.0
           spack add netcdf-fortran%apple-clang@14.0.0
           spack add parallel-netcdf%apple-clang@14.0.0
