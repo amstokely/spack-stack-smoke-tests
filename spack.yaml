@@ -5,10 +5,8 @@
 spack:
   # add package specs to the `specs` list
   specs:
-  - libxcrypt%gcc@12.4.0
-  #- parallel-netcdf%gcc@12.4.0
-  #- parallelio%gcc@12.4.0
-  #- ecmwf-atlas
+  - gcc@12.2.0%gcc@12.4.0
+  - parallel-netcdf%gcc@12.2.0
   concretizer:
     unify: true
   mirrors::
