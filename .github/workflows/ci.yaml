@@ -25,7 +25,6 @@ jobs:
         run: |
           spack env activate .
           spack compiler find
-          spack compiler rm apple-clang --a
       - name: Concretize Spack Environment 
         shell: spack-bash {0}
         run: |
