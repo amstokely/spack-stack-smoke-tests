@@ -1,70 +1,32 @@
-name: Build Spack Environment on macOS
-
+name: Spack buildcache build 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
+  workflow_dispatch:
+    inputs:
+      os_choice:
+        description: 'Select the operating system to run the job on'
+        required: true
+        default: 'ubuntu-latest'
+        type: choice
+        options:
+          - ubuntu-latest
+          - macos-latest
 
 jobs:
   spack-build:
-    runs-on: macos-latest
+    runs-on: ${{ github.event.inputs.os_choice }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Install Spack
-        run: |
-          git clone https://github.com/spack/spack.git
-          . ./spack/share/spack/setup-env.sh
-
+      - name: Setup Spack
+        uses: spack/setup-spack@v2
       - name: Create Spack Environment 
         run: |
-          . ./spack/share/spack/setup-env.sh
-          spack env create mpas-bundle 
-          spack env activate mpas-bundle
+          spack env activate .
           spack compiler find
-          spack compiler rm gcc -a
-          spack add ecmwf-atlas
-          spack add ecbuild
-          spack add eckit
-          spack add fckit
-          spack add parallelio
-          spack add netcdf-c
-          spack add netcdf-fortran
-          spack add netcdf-cxx4
-          spack add parallel-netcdf
-          spack add gptl
-          spack add jedi-cmake
-          spack add gsl-lite
-          spack add udunits
-          spack add nccmp
-          spack add py-pycodestyle
-          cp $(spack location -e mpas-bundle)/spack.yaml .
       - name: Concretize Spack Environment 
         run: |
-          . ./spack/share/spack/setup-env.sh
-          spack env activate mpas-bundle
           spack concretize 2<&1 | tee log.concretize
-      - name: Upload Concretization Logs
-        uses: actions/upload-artifact@v3
-        with:
-          name: log.concretize
-          path: ./log.concretize
-      - name: Upload mpas-bundle Environment file 
-        uses: actions/upload-artifact@v3
-        with:
-          name: mpas-bundle_env 
-          path: ./spack.yaml
-      - name: Install Spack Environment 
-        run: |
-          . ./spack/share/spack/setup-env.sh
-          spack env activate mpas-bundle
           spack install --verbose 2<&1 | tee log.install
-      - name: Upload Install Logs
-        uses: actions/upload-artifact@v3
-        with:
-          name: log.install
-          path: ./log.install
+          spack -e . buildcache push my-mirror
 
