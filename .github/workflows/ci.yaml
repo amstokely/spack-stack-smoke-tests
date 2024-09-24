@@ -30,8 +30,8 @@ jobs:
         shell: spack-bash {0}
         run: |
           spack env activate .
+          spack -e . mirror set --oci-username ${{ github.actor }} --oci-password "${{ secrets.ACCESS_TOKEN }}" local-buildcache
           spack concretize 2<&1 | tee log.concretize
           spack install --verbose 2<&1 | tee log.install
-          spack -e . mirror set --oci-username ${{ github.actor }} --oci-password "${{ secrets.ACCESS_TOKEN }}" local-buildcache
           spack -e . buildcache push local-buildcache 
 
