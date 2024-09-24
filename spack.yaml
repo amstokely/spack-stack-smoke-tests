@@ -6,13 +6,13 @@ spack:
   # add package specs to the `specs` list
   specs:
   - readline%gcc@12.4.0
-  #- fftw%gcc@12.4.0
+  - fftw%gcc@12.4.0
   #- parallel-netcdf%gcc@12.4.0
   #- parallelio%gcc@12.4.0
   #- ecmwf-atlas
   concretizer:
     unify: true
-  mirrors:
+  mirrors::
     local-buildcache:
       url: oci://ghcr.io/amstokely/spack-buildcache
       signed: false
