@@ -5,10 +5,10 @@
 spack:
   # add package specs to the `specs` list
   specs:
-  - openssh%gcc@12.4.0
+  - gcc@12.2.0%gcc@12.3.0
   concretizer:
     unify: true
   mirrors::
-    local-buildcache:
+    spack-buildcache:
       url: oci://ghcr.io/amstokely/spack-buildcache
       signed: false
