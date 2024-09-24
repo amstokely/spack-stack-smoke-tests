@@ -5,7 +5,10 @@
 spack:
   # add package specs to the `specs` list
   specs:
-  - fftw%gcc@12.2.0 
+  - fftw%gcc@12.4.0 
+  - parallel-netcdf%gcc@12.4.0 
+  - parallelio%gcc@12.4.0 
+  - ecmwf-atlas
   concretizer:
     unify: true
   mirrors:
