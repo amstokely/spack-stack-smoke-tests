@@ -5,7 +5,7 @@
 spack:
   # add package specs to the `specs` list
   specs:
-  - readlines%gcc@12.2.4
+  - readline%gcc@12.2.4
   #- fftw%gcc@12.4.0
   #- parallel-netcdf%gcc@12.4.0
   #- parallelio%gcc@12.4.0
@@ -16,8 +16,3 @@ spack:
     local-buildcache:
       url: oci://ghcr.io/amstokely/spack-buildcache
       signed: false
-  packages:
-    python:
-      externals:
-      - spec: python@3.9.18+bz2+crypt+ctypes+dbm+lzma~nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-        prefix: /usr
