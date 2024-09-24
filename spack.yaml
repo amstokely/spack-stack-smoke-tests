@@ -5,9 +5,7 @@
 spack:
   # add package specs to the `specs` list
   specs:
-  - netcdf-c%gcc@12.3.0
-  - netcdf-fortran%gcc@12.3.0
-  - parallel-netcdf%gcc@12.3.0
+  - libxcrypt%gcc@12.4.0
   #- parallel-netcdf%gcc@12.4.0
   #- parallelio%gcc@12.4.0
   #- ecmwf-atlas
