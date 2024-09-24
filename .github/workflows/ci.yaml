@@ -10,7 +10,6 @@ on:
         options:
           - ubuntu-latest
           - macos-latest
-
 jobs:
   spack-build:
     runs-on: ${{ github.event.inputs.os_choice }}
@@ -26,6 +25,7 @@ jobs:
         run: |
           spack env activate .
           spack compiler find
+          spack compiler rm apple-clang --a
       - name: Concretize Spack Environment 
         shell: spack-bash {0}
         run: |
