@@ -22,13 +22,13 @@ jobs:
       - name: Setup Spack
         uses: spack/setup-spack@v2
       - name: Create Spack Environment 
+        shell: spack-bash {0}
         run: |
-          #. /home/runner/work/spack-stack-smoke-tests/spack-stack-smoke-tests/spack/share/spack/setup-env.sh
           spack env activate .
           spack compiler find
       - name: Concretize Spack Environment 
+        shell: spack-bash {0}
         run: |
-          #. /home/runner/work/spack-stack-smoke-tests/spack-stack-smoke-tests/spack/share/spack/setup-env.sh
           spack env activate .
           spack concretize 2<&1 | tee log.concretize
           spack install --verbose 2<&1 | tee log.install
