@@ -39,7 +39,7 @@ jobs:
           spack env create gcc120200
           spack env activate gcc120200 
           spack -e . mirror set --oci-username ${{ github.actor }} --oci-password "${{ secrets.ACCESS_TOKEN }}" local-buildcache
-          spack add gcc@12.2.0%gcc@12.4.0
+          spack add gcc@12.2.0
           spack install
           spack load gcc/12.2.0
           spack compiler find
