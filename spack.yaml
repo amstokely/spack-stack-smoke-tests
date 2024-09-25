@@ -5,7 +5,8 @@
 spack:
   # add package specs to the `specs` list
   specs:
-  - krb5%gcc@12.4.0 
+  - findutils%gcc@12.4.0 
+  - bison%gcc@12.4.0 
   concretizer:
     unify: true
   mirrors::
