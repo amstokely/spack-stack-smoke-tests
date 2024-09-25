@@ -8,3 +8,7 @@ spack:
   - gettext%gcc@12.4.0
   concretizer:
     unify: true
+  mirrors::
+    local-buildcache:
+      url: oci://ghcr.io/amstokely/spack-buildcache
+      signed: false
