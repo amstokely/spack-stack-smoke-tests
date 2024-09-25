@@ -32,17 +32,6 @@ jobs:
           brew install krb5
           spack env activate .
           spack external find krb5 --scope=system
-      - name: Pull gcc12.2.0 from mirror 
-        shell: spack-bash {0}
-        if: runner.os == 'Linux'
-        run: |
-          spack env create gcc120200
-          spack env activate gcc120200 
-          spack -e . mirror set --oci-username ${{ github.actor }} --oci-password "${{ secrets.ACCESS_TOKEN }}" local-buildcache
-          spack add gcc@12.2.0
-          spack install
-          spack load gcc/12.2.0
-          spack compiler find
       - name: Concretize Spack Environment 
         shell: spack-bash {0}
         run: |
@@ -50,12 +39,12 @@ jobs:
           spack external find python --scope=system
           spack external find m4 --scope=system
           spack external find openssl --scope=system
-          spack -e . mirror set --oci-username ${{ github.actor }} --oci-password "${{ secrets.ACCESS_TOKEN }}" local-buildcache
+          spack -e . mirror set --oci-username ${{ github.actor }} --oci-password "${{ secrets.ACCESS_TOKEN }}" mpas-bundle_buildcache
           spack concretize 2<&1 | tee log.concretize
-      - name: Concretize Spack Environment 
+      - name: Install Spack Environment 
         shell: spack-bash {0}
         run: |
           spack env activate .
           spack install --verbose 2<&1 | tee log.install
-          spack -e . buildcache push local-buildcache 
+          spack -e . buildcache push mpas-bundle_buildcache 
 
