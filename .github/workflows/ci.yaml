@@ -41,6 +41,10 @@ jobs:
           spack external find openssl --scope=system
           spack -e . mirror set --oci-username ${{ github.actor }} --oci-password "${{ secrets.ACCESS_TOKEN }}" local-buildcache
           spack concretize 2<&1 | tee log.concretize
+      - name: Concretize Spack Environment 
+        shell: spack-bash {0}
+        run: |
+          spack env activate .
           spack install --verbose 2<&1 | tee log.install
           spack -e . buildcache push local-buildcache 
 
