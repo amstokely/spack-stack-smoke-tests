@@ -25,6 +25,13 @@ jobs:
         run: |
           spack env activate .
           spack compiler find
+      - name: Install brew packages 
+        shell: spack-bash {0}
+        if: runner.os == 'macOS'
+        run: |
+          brew install krb5
+          spack env activate .
+          spack external find krb5 --scope=system
       - name: Concretize Spack Environment 
         shell: spack-bash {0}
         run: |
