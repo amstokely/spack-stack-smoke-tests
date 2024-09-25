@@ -32,6 +32,17 @@ jobs:
           brew install krb5
           spack env activate .
           spack external find krb5 --scope=system
+      - name: Pull gcc12.2.0 from mirror 
+        shell: spack-bash {0}
+        if: runner.os == 'Linux'
+        run: |
+          spack env create gcc120200
+          spack env activate gcc120200 
+          spack -e . mirror set --oci-username ${{ github.actor }} --oci-password "${{ secrets.ACCESS_TOKEN }}" local-buildcache
+          spack add gcc@12.2.0%gcc@12.4.0
+          spack install
+          spack load gcc/12.2.0
+          spack compiler find
       - name: Concretize Spack Environment 
         shell: spack-bash {0}
         run: |
